@@ -1,0 +1,111 @@
+def select_mark():
+    while(True):
+        print("O , X 중 하나만 고르세요!")
+        user_mark =input().upper()
+        if(user_mark != 'O' and user_mark != 'X'):
+            print("다시 선택해주세요!")
+        else:
+            if (user_mark == 'O'):
+                return 'O','X'
+            elif (user_mark == 'X'):
+                return 'X','O'
+            break
+import random
+# make random order (1 = com,0 = user)
+def random_order():
+    num = random.randrange(0, 2)
+    if(num == 0):
+        return 0
+    else:
+        return 1
+
+def make_board():
+    board = []
+    for i in range(9):
+        board.append("*")
+    return board
+
+def check_win(board, mark):
+    if board[0] == mark and board[1] == mark and board[2] == mark:
+        return True
+    elif board[0] == mark and board[4] == mark and board[8] == mark:
+        return True
+    elif board[0] == mark and board[3] == mark and board[6] == mark:
+        return True
+    elif board[1] == mark and board[4] == mark and board[7] == mark:
+        return True
+    elif board[2] == mark and board[5] == mark and board[8] == mark:
+        return True
+    elif board[2] == mark and board[4] == mark and board[6] == mark:
+        return True
+    elif board[3] == mark and board[4] == mark and board[5] == mark:
+        return True
+    elif board[6] == mark and board[7] == mark and board[8] == mark:
+        return True
+    else:
+        return False
+
+def print_board(board):
+    for i in range(0,9,3):
+        print(board[i+0],board[i+1],board[i+2])
+
+
+def user_time(board,mark):
+    while(True):
+        print("1 ~ 9 까지만 선택해주세요!")
+        t = int(input())
+        if(1 <= t and t <= 9):
+            if(board[t-1] == "*"):
+                board[t-1] = mark
+                break
+            else:
+                print("다시 선택해주세요!")
+        else:
+            print("숫자를 다시 골라주세요!")
+def computer_time(board,mark):
+    while(True):
+        w = random.randrange(0,9)
+        if(board[w -1] == "*"):
+            board[w - 1] = mark
+            break
+turn = ''
+t = random_order()
+if(t == 1):
+    turn = 'com'
+    print("컴퓨터가 먼저 공격합니다!")
+else:
+    turn = 'user'
+    print("유저가 먼저 공격합니다!")
+board = make_board()
+user, com = select_mark()
+k = 0
+print_board(board)
+print("------------")
+while(True):
+    user_win = check_win(board,user)
+    com_win = check_win(board,com)
+    if(user_win == True):
+        print_board(board)
+        print("user win")
+        break
+    elif(com_win == True):
+        print_board(board)
+        print("computer win")
+        break
+    elif(k == 9):
+        print_board(board)
+        print("draw")
+        break
+    else:
+        if(turn == 'com'):
+            computer_time(board, com)
+            print_board(board)
+            turn = 'user'
+        elif(turn == 'user'):
+            user_time(board, user)
+            print_board(board)
+            turn = 'com'
+    print("-------------------")
+    k += 1
+
+
